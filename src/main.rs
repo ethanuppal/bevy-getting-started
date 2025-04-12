@@ -22,9 +22,17 @@ fn greet_people(query: Query<&Name, With<Person>>) {
     }
 }
 
+fn update_people(mut query: Query<&mut Name, With<Person>>) {
+    for mut name in &mut query {
+        if name.0 == "PPAP" {
+            name.0 = "Pen Pineapple Apple Pen";
+        }
+    }
+}
+
 fn main() {
     App::new()
         .add_systems(Startup, add_people)
-        .add_systems(Update, (hello_world, greet_people))
+        .add_systems(Update, (hello_world, (update_people, greet_people).chain()))
         .run();
 }
